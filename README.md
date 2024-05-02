@@ -23,7 +23,9 @@ Before you begin, ensure you have the following installed:
 
 Clone the repository to your local machine:
 
+``````
 git clone https://github.com/joycezemitchell/landConnex.git
+``````
 
 Navigate to the project directory:
 
