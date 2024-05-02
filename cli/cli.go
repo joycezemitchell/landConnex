@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"LandConnex/sorter"
+	sorter2 "LandConnex/modules/sorter"
 	"fmt"
 	cli "github.com/urfave/cli/v2"
 	"io/ioutil"
@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func Run(appSorter sorter.Sorter) {
+func Run(appSorter sorter2.Sorter) {
 	app := &cli.App{
 		Name:  "name-sorter",
 		Usage: "Sorts a list of names from a file",
@@ -45,9 +45,9 @@ func Run(appSorter sorter.Sorter) {
 			names := strings.Split(strings.TrimSpace(string(content)), "\n")
 
 			if sortBy == "first" {
-				appSorter = sorter.NewNameSorter(&sorter.FirstNameSorting{}, sorter.NewNameParser())
+				appSorter = sorter2.NewNameSorter(&sorter2.FirstNameSorting{}, sorter2.NewNameParser())
 			} else {
-				appSorter = sorter.NewNameSorter(&sorter.LastNameSorting{}, sorter.NewNameParser())
+				appSorter = sorter2.NewNameSorter(&sorter2.LastNameSorting{}, sorter2.NewNameParser())
 			}
 
 			sortedNames := appSorter.Sort(names, desc)

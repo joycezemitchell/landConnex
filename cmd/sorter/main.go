@@ -2,12 +2,12 @@ package main
 
 import (
 	"LandConnex/cli"
-	"LandConnex/sorter"
+	sorter2 "LandConnex/modules/sorter"
 )
 
 func main() {
-	strategy := sorter.NewLastNameSorting()
-	parser := sorter.NewNameParser()
-	nameSorter := sorter.NewNameSorter(strategy, parser)
+	strategy := sorter2.NewLastNameSorting()
+	parser := sorter2.NewNameParser()
+	nameSorter := sorter2.NewNameSorter(strategy, parser)
 	cli.Run(nameSorter)
 }
