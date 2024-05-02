@@ -27,7 +27,9 @@ git clone https://github.com/joycezemitchell/landConnex.git
 
 Navigate to the project directory:
 
-cd landConnex
+cd landConnex 
+
+go mod tidy
 
 No additional installations are required if Go is properly installed.
 
@@ -54,7 +56,7 @@ The sorted names will be saved to a new file named <original_file_name>-sorted.t
 
 To run the automated tests for this system, use the following command:
 
-go test
+go test ./sorter/
 
 ## Authors
 
