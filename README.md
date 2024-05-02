@@ -70,7 +70,7 @@ To run the automated tests for this system, use the following command:
 make tests
 ``````
 
-## Authors
+## Author
 
 - John Mitchell Villanueva
 
