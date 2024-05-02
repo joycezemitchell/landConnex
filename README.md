@@ -66,7 +66,9 @@ The sorted names will be saved to a new file named <original_file_name>-sorted.t
 
 To run the automated tests for this system, use the following command:
 
+``````
 make tests
+``````
 
 ## Authors
 
