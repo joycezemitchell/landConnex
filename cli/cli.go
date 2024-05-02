@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func Run() {
+func Run(appSorter sorter.Sorter) {
 	app := &cli.App{
 		Name:  "name-sorter",
 		Usage: "Sorts a list of names from a file",
@@ -43,15 +43,14 @@ func Run() {
 			}
 
 			names := strings.Split(strings.TrimSpace(string(content)), "\n")
-			var s sorter.Sorter
 
 			if sortBy == "first" {
-				s = sorter.NewNameSorter(&sorter.FirstNameSorting{})
+				appSorter = sorter.NewNameSorter(&sorter.FirstNameSorting{}, sorter.NewNameParser())
 			} else {
-				s = sorter.NewNameSorter(&sorter.LastNameSorting{})
+				appSorter = sorter.NewNameSorter(&sorter.LastNameSorting{}, sorter.NewNameParser())
 			}
 
-			sortedNames := s.Sort(names, desc)
+			sortedNames := appSorter.Sort(names, desc)
 
 			outputFileName := fileName[:len(fileName)-len(".txt")] + "-sorted.txt"
 			err = ioutil.WriteFile(outputFileName, []byte(strings.Join(sortedNames, "\n")), 0644)

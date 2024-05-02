@@ -5,38 +5,71 @@ import (
 	"testing"
 )
 
+func sampleNames() []Name {
+	return []Name{
+		{First: "John", Last: "Doe", Full: "John Doe"},
+		{First: "Jane", Last: "Smith", Full: "Jane Smith"},
+		{First: "Alice", Last: "Brown", Full: "Alice Brown"},
+	}
+}
+
 func TestLastNameSorting(t *testing.T) {
-	names := []Name{
+	names := sampleNames()
+	sorter := NewLastNameSorting()
+	sortedAsc := sorter.Sort(names, false)
+	expectedAsc := []Name{
+		{First: "Alice", Last: "Brown", Full: "Alice Brown"},
 		{First: "John", Last: "Doe", Full: "John Doe"},
-		{First: "Jane", Last: "Doe", Full: "Jane Doe"},
-		{First: "Alice", Last: "Smith", Full: "Alice Smith"},
+		{First: "Jane", Last: "Smith", Full: "Jane Smith"},
 	}
-	lastNameSorting := LastNameSorting{}
-	sorted := lastNameSorting.Sort(names, false)
-	expected := []Name{
+	if !reflect.DeepEqual(sortedAsc, expectedAsc) {
+		t.Errorf("Ascending LastNameSorting failed, got %v, want %v", sortedAsc, expectedAsc)
+	}
+
+	sortedDesc := sorter.Sort(names, true)
+	expectedDesc := []Name{
+		{First: "Jane", Last: "Smith", Full: "Jane Smith"},
 		{First: "John", Last: "Doe", Full: "John Doe"},
-		{First: "Jane", Last: "Doe", Full: "Jane Doe"},
-		{First: "Alice", Last: "Smith", Full: "Alice Smith"},
+		{First: "Alice", Last: "Brown", Full: "Alice Brown"},
 	}
-	if !reflect.DeepEqual(sorted, expected) {
-		t.Errorf("Expected %v, got %v", expected, sorted)
+	if !reflect.DeepEqual(sortedDesc, expectedDesc) {
+		t.Errorf("Descending LastNameSorting failed, got %v, want %v", sortedDesc, expectedDesc)
 	}
 }
 
 func TestFirstNameSorting(t *testing.T) {
-	names := []Name{
-		{First: "Alice", Last: "Smith", Full: "Alice Smith"},
-		{First: "Jane", Last: "Doe", Full: "Jane Doe"},
+	names := sampleNames()
+	sorter := NewFirstNameSorting()
+	sortedAsc := sorter.Sort(names, false)
+	expectedAsc := []Name{
+		{First: "Alice", Last: "Brown", Full: "Alice Brown"},
+		{First: "Jane", Last: "Smith", Full: "Jane Smith"},
 		{First: "John", Last: "Doe", Full: "John Doe"},
 	}
-	firstNameSorting := FirstNameSorting{}
-	sorted := firstNameSorting.Sort(names, false)
-	expected := []Name{
-		{First: "Alice", Last: "Smith", Full: "Alice Smith"},
-		{First: "Jane", Last: "Doe", Full: "Jane Doe"},
-		{First: "John", Last: "Doe", Full: "John Doe"},
+	if !reflect.DeepEqual(sortedAsc, expectedAsc) {
+		t.Errorf("Ascending FirstNameSorting failed, got %v, want %v", sortedAsc, expectedAsc)
 	}
-	if !reflect.DeepEqual(sorted, expected) {
-		t.Errorf("Expected %v, got %v", expected, sorted)
+
+	sortedDesc := sorter.Sort(names, true)
+	expectedDesc := []Name{
+		{First: "John", Last: "Doe", Full: "John Doe"},
+		{First: "Jane", Last: "Smith", Full: "Jane Smith"},
+		{First: "Alice", Last: "Brown", Full: "Alice Brown"},
+	}
+	if !reflect.DeepEqual(sortedDesc, expectedDesc) {
+		t.Errorf("Descending FirstNameSorting failed, got %v, want %v", sortedDesc, expectedDesc)
+	}
+}
+
+func TestNameSorter(t *testing.T) {
+	names := []string{"John Doe", "Jane Smith", "Alice Brown"}
+	parser := NewNameParser()
+	strategy := NewFirstNameSorting()
+	sorter := NewNameSorter(strategy, parser)
+
+	sortedNames := sorter.Sort(names, false)
+	expected := []string{"Alice Brown", "Jane Smith", "John Doe"}
+	if !reflect.DeepEqual(sortedNames, expected) {
+		t.Errorf("NameSorter failed, got %v, want %v", sortedNames, expected)
 	}
 }

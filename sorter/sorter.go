@@ -1,14 +1,10 @@
 package sorter
 
-import (
-	"sort"
-	"strings"
-)
+import "sort"
 
-type Name struct {
-	First string
-	Last  string
-	Full  string
+type NameSorter struct {
+	Strategy SortingStrategy
+	Parser   *NameParser
 }
 
 type Sorter interface {
@@ -20,6 +16,10 @@ type SortingStrategy interface {
 }
 
 type LastNameSorting struct{}
+
+func NewLastNameSorting() SortingStrategy {
+	return &LastNameSorting{}
+}
 
 func (l *LastNameSorting) Sort(names []Name, desc bool) []Name {
 	sort.Slice(names, func(i, j int) bool {
@@ -33,6 +33,10 @@ func (l *LastNameSorting) Sort(names []Name, desc bool) []Name {
 
 type FirstNameSorting struct{}
 
+func NewFirstNameSorting() SortingStrategy {
+	return &FirstNameSorting{}
+}
+
 func (f *FirstNameSorting) Sort(names []Name, desc bool) []Name {
 	sort.Slice(names, func(i, j int) bool {
 		if desc {
@@ -43,29 +47,14 @@ func (f *FirstNameSorting) Sort(names []Name, desc bool) []Name {
 	return names
 }
 
-type NameSorter struct {
-	Strategy SortingStrategy
-}
-
-func NewNameSorter(strategy SortingStrategy) Sorter {
-	return &NameSorter{Strategy: strategy}
+func NewNameSorter(strategy SortingStrategy, parser *NameParser) Sorter {
+	return &NameSorter{Strategy: strategy, Parser: parser}
 }
 
 func (s *NameSorter) Sort(names []string, desc bool) []string {
-	parsedNames := parseNames(names)
+	parsedNames := s.Parser.Parse(names)
 	sortedNames := s.Strategy.Sort(parsedNames, desc)
 	return namesFromStructs(sortedNames)
-}
-
-func parseNames(names []string) []Name {
-	var parsed []Name
-	for _, name := range names {
-		parts := strings.Fields(name)
-		last := parts[len(parts)-1]
-		first := strings.Join(parts[:len(parts)-1], " ")
-		parsed = append(parsed, Name{First: first, Last: last, Full: name})
-	}
-	return parsed
 }
 
 func namesFromStructs(names []Name) []string {

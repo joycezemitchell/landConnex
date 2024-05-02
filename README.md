@@ -27,17 +27,19 @@ git clone https://github.com/joycezemitchell/landConnex.git
 
 Navigate to the project directory:
 
+``````
 cd landConnex 
-
 go mod tidy
-
+``````
 No additional installations are required if Go is properly installed.
 
 ## Usage
 
 Run the application from the command line by providing the path to the file containing the names:
 
-go run main.go --file=file-name.txt
+``````
+make build
+``````
 
 ### Optional Arguments
 
@@ -46,7 +48,13 @@ go run main.go --file=file-name.txt
 
 Example command to sort by first name in descending order:
 
-go run main.go --file=file-name.txt --sort-by first --desc
+``````
+./sorter_app --file=file-name.txt
+``````
+
+``````
+./sorter_app --file=file-name.txt --sort-by first --desc
+``````
 
 ## Output
 
@@ -56,7 +64,7 @@ The sorted names will be saved to a new file named <original_file_name>-sorted.t
 
 To run the automated tests for this system, use the following command:
 
-go test ./sorter/
+make tests
 
 ## Authors
 
